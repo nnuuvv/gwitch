@@ -124,7 +124,7 @@ pub fn join_channel(subj: Subject(Message), channel: String) -> Subject(Message)
 
 /// A function for sending a message to a Twitch channel
 pub fn send_message(subj: Subject(Message), msg: String) {
-  stratus.send_message(subj, Message(msg))
+  process.send(subj, stratus.to_user_message(Message(msg)))
 }
 
 pub opaque type Config {
@@ -181,7 +181,7 @@ pub fn login(subj: Subject(Message), config: Config) -> Subject(Message) {
     None -> #("justinfan123", "gibberish")
   }
   // Send the login message to the WebSocket process
-  stratus.send_message(subj, Message("PASS " <> password))
-  stratus.send_message(subj, Message("NICK " <> username))
+  process.send(subj, stratus.to_user_message(Message("PASS " <> password)))
+  process.send(subj, stratus.to_user_message(Message("NICK " <> username)))
   subj
 }
